@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.xy.sm.entity.TestInfo">
+	
+	
+	
+	<insert id="insertBatch" parameterType="ArrayList">
+    insert into phones(phone,guid,type) 
+    values 
+    <foreach collection="list" item="obj" separator=",">
+        (#{obj.phone},#{obj.guid},#{obj.type})
+    </foreach>
+	</insert>
+	
+	<update id="createTemp" parameterType="String">
+		${createSql}
+	</update>
+	
+	<insert id="insertTemp" parameterType="java.util.Set">
+    insert into cc 
+    values 
+    <foreach collection="map.keys" item="item" index="index" separator=",">
+        (${item},${map[item]})
+    </foreach>
+</insert>
+	
+	<select id="selectCcTemp" resultType="HashMap">
+		select * from cc;
+	</select>
+	
+	<select id="selectList_testInfo" parameterType="TestInfo" resultType="TestInfo">
+    	select * from TestInfo where 1 = 1
+    	<if test="age != null">
+    		and age = #{age}
+    	</if>
+    	<if test="gender != null">
+    		and gender = #{gender}
+    	</if>
+    	<if test="hobby != null">
+    		and hobby like concat('%',#{hobby},'%')
+    	</if>
+    	<if test="name != null">
+    		and name = #{name}
+    	</if>
+    </select>
+    
+    <select id="selectPage_testInfo" parameterType="TestInfo" resultType="TestInfo">
+    	select * from TestInfo where 1 = 1
+    	<if test="age != null">
+    		and age = #{age}
+    	</if>
+    	<if test="gender != null">
+    		and gender = #{gender}
+    	</if>
+    	<if test="hobby != null">
+    		and hobby like concat('%',#{hobby},'%')
+    	</if>
+    	<if test="name != null">
+    		and name = #{name}
+    	</if>
+    </select>
+    
+    <select id="selectOne_testInfo" parameterType="TestInfo" resultType="TestInfo">
+    	select * from TestInfo where id = #{id}
+    </select>
+    
+    <update id="update_testInfo" parameterType="TestInfo">
+	    update testInfo 
+	    <set>
+	    	<if test="age != null">
+    			age = #{age},
+    		</if>
+    		<if test="gender != null">
+    			gender = #{gender},
+    		</if>
+    		<if test="hobby != null">
+    			hobby = #{hobby},
+    		</if>
+    		<if test="name != null">
+    			name = #{name},
+    		</if>
+	    </set>
+	    where id = #{id} 
+    </update>
+    
+    <insert id="insert_testInfo" parameterType="TestInfo" useGeneratedKeys="true" keyProperty="id">
+    	insert into testInfo(
+		 	age,gender,hobby,name
+		 )
+		values(
+			#{age},#{gender},#{hobby},#{name}
+			)
+    </insert>
+    
+    <delete id="delete_testInfo" parameterType="TestInfo">
+    	delete from TestInfo where id = #{id}
+    </delete>
+    
+</mapper>
